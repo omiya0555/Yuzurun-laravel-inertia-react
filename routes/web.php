@@ -19,16 +19,16 @@ Route::get('/', function () {
 
 Route::middleware(['auth', 'verified'])->group(function () {
     
-    Route::get('/home',function () { return Inertia::render('Home'); })->name('home');
-
-    Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');
-    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');
-    Route::post('/products', [ProductController::class, 'store'])->name('products.store');
-    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
-    Route::patch('/products/{product}', [ProductController::class, 'update'])->name('products.update');
-    Route::put('/products/{product}/status', [ProductController::class, 'updateStatus'])->name('products.status');
-    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/home', function () { return Inertia::render('Home'); })->name('home');
+    
+    Route::get('/products', [ProductController::class, 'index'])->name('products.index');  // 一覧表示
+    Route::get('/products/create', [ProductController::class, 'create'])->name('products.create');  // 作成画面
+    Route::post('/products', [ProductController::class, 'store'])->name('products.store');  // 新規登録
+    Route::get('/products/{product}', [ProductController::class, 'show'])->name('products.show');  // 詳細表示
+    Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');  // 編集画面
+    Route::put('/products/{product}/status', [ProductController::class, 'updateStatus'])->name('products.status');  // ステータス更新処理
+    Route::patch('/products/{product}', [ProductController::class, 'update'])->name('products.update');  // 更新処理
+    Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');  // 削除処理
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
