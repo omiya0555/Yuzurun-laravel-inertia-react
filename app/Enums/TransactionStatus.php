@@ -23,11 +23,11 @@ enum TransactionStatus: int
     /**
      * ステータス変更に伴うメッセージ
      */
-    public function message(string $userName): string
+    public function message(): string
     {
         return match ($this) {
-            self::PENDING => '商品を出品しました。',
-            self::BOOKING => '商品が予約されました。',
+            self::PENDING   => '商品を出品しました。',
+            self::BOOKING   => '商品が予約されました。チャットルームへ移動して取引を進めましょう！',
             self::COMPLETED => '取引が完了しました。ありがとうございました！',    
        };
     }

@@ -265,4 +265,59 @@ class ProductController extends Controller
             return response()->json(['message' => $e->getMessage()], 500);
         }
     }
+
+    /**
+     * Handle the incoming request.
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function statusChange(Request $request): \Illuminate\Http\RedirectResponse
+    {
+        $validatedData = $request->validate([
+            'product_id' => 'required|exists:products,id',
+            // Emunsで定義したPENDDING(int 0)かBOOKING(int 1)のいずれか
+            'new_status' => 'required|in:'.TransactionStatus::BOOKING.','.TransactionStatus::COMPLETED,
+        ]);
+
+        try{
+            // 取引ステータスを遷移させる処理
+            $product    = Product::findOrFail($validatedData['product_id']);
+            $old_status = $product->transaction_status;
+            $new_status = $validatedData['new_status'];
+
+            // ここでステータス遷移の条件を設定
+            // 予約処理 出品中から予約中に変更
+            if ($old_status === TransactionStatus::PENDING && $new_status === TransactionStatus::BOOKING)   {
+                $product->transaction_status = $new_status;
+                $product->save();
+
+                // TODO:予約通知メール送信処理予定
+                
+                return redirect()->route('products.show', ['product' => $product->id])
+                    ->with('flash', ['message' => TransactionStatus::BOOKING->message(), 'type' => 'success']);
+
+            // 完了処理 予約中から取引完了に変更
+            }elseif($old_status === TransactionStatus::BOOKING && $new_status === TransactionStatus::COMPLETED) {   
+                $product->transaction_status = $new_status;
+                $product->save();
+
+                // TODO:完了通知メール送信処理予定
+
+                return redirect()->route('products.show', ['product' => $product->id])
+                    ->with('flash', ['message' => TransactionStatus::COMPLETED->message(), 'type' => 'success']);
+
+            }else{
+                // 無効なステータス遷移
+                return redirect()->route('products.show', ['product' => $product->id])
+                    ->with('flash', ['message' => '無効なステータス遷移です。', 'type' => 'error']);
+            }
+        }catch (ModelNotFoundException $e) {
+            return redirect()->route('products.index')
+                ->with('flash', ['message' => '商品が見つかりませんでした。', 'type' => 'error']);
+        } catch (\Exception $e) {
+            // 例外処理
+            return redirect()->route('products.index')
+                ->with('flash', ['message' => 'ステータス遷移に失敗しました。', 'type' => 'error']);
+        }
+    }
 }
