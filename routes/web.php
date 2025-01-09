@@ -16,9 +16,6 @@ Route::get('/', function () {
     ]);
 });
 
-Route::get('/', function () {
-    return Inertia::render('Welcome');
-})->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     
@@ -30,6 +27,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/products', [ProductController::class, 'store'])->name('products.store');
     Route::get('/products/{product}/edit', [ProductController::class, 'edit'])->name('products.edit');
     Route::patch('/products/{product}', [ProductController::class, 'update'])->name('products.update');
+    Route::put('/products/{product}/status', [ProductController::class, 'updateStatus'])->name('products.status');
     Route::delete('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
