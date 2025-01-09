@@ -26,7 +26,7 @@ enum TransactionStatus: int
     public function message(): string
     {
         return match ($this) {
-            self::PENDING   => '商品を出品しました。',
+            self::PENDING   => '商品が出品中になりました。',
             self::BOOKING   => '商品が予約されました。チャットルームへ移動して取引を進めましょう！',
             self::COMPLETED => '取引が完了しました。ありがとうございました！',    
        };
