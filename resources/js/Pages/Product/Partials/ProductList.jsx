@@ -9,13 +9,13 @@ const CATEGORIES = [
 ];
 
 function ProductList({ products }) {
-  const [filteredProducts, setFilteredProducts] = useState(products);
+  const [filteredProducts, setFilteredProducts] = useState(products.data);
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('');
 
   // **検索とカテゴリで絞り込み**
   const handleSearch = () => {
-    const filtered = products.filter((product) => {
+    const filtered = products.data.filter((product) => {
       const matchesTerm = product.title.includes(searchTerm);
       const matchesCategory = selectedCategory ? product.category === selectedCategory : true;
       return matchesTerm && matchesCategory;
@@ -91,6 +91,19 @@ function ProductList({ products }) {
             </Link>
           ))
         )}
+      </div>
+      
+      {/* ページネーション */}
+      <div className="mt-8 flex justify-center">
+        {products.links.map((link, index) => (
+          <Link
+            key={index}
+            href={link.url}
+            className={`inline-block px-3 py-1 mx-1 rounded-md ${link.active ? 'bg-blue-600 text-white' : 'bg-gray-300 text-gray-800'}`}
+          >
+            {link.label}
+          </Link>
+        ))}
       </div>
     </div>
   );

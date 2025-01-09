@@ -2,7 +2,8 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout';
 import { Head } from '@inertiajs/react';
 import ProductList from './Partials/ProductList';
 
-export default function Index({ products}) {
+export default function Index({ products }) {
+  console.log(products.data.length);
 
   return (
       <AuthenticatedLayout
@@ -14,7 +15,7 @@ export default function Index({ products}) {
       >
         <Head title="マーケット" />
 
-        {products.length > 0 ? (
+        {products.data.length > 0 ? (
           <ProductList products={products} />
         ) : (
           <p className="text-gray-600 flex justify-center mt-24">

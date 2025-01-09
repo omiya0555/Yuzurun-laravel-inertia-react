@@ -23,14 +23,14 @@ class ProductController extends Controller
     {
         try {
             // 出品中、予約中の商品一覧を取得
-            $product = Product::where('transaction_status', TransactionStatus::PENDING)
+            $products = Product::where('transaction_status', TransactionStatus::PENDING)
             ->orWhere('transaction_status', TransactionStatus::BOOKING)
             ->with('seller')
             ->orderBy('created_at', 'desc')
-            ->get();
+            ->paginate(20);
 
             return Inertia::render('Product/Index', [
-                'products' => $product,
+                'products' => $products,
             ]);
         } catch (\Exception $e) {
             return response()->json(['message' => $e->getMessage()], 500);
