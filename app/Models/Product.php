@@ -56,18 +56,12 @@ class Product extends Model
         'ジャンク',
     ];
 
+    public function seller()
+    {
+        return $this->belongsTo(User::class, 'seller_id');
+    }
 
     protected $casts = [
         'image_urls' => 'array',
     ];
-
-    public static function categoryOptions()
-    {
-        return ['electronics', 'furniture', 'books', 'clothing'];
-    }
-
-    public static function conditionOptions()
-    {
-        return ['new', 'like_new', 'used'];
-    }
 }
