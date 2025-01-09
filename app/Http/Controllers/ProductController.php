@@ -271,12 +271,13 @@ class ProductController extends Controller
      * @param \Illuminate\Http\Request $request
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function statusChange(Request $request): \Illuminate\Http\RedirectResponse
+    public function updateStatus(Request $request): \Illuminate\Http\RedirectResponse
     {
+
         $validatedData = $request->validate([
             'product_id' => 'required|exists:products,id',
-            // Emunsで定義したPENDDING(int 0)かBOOKING(int 1)のいずれか
-            'new_status' => 'required|in:'.TransactionStatus::BOOKING.','.TransactionStatus::COMPLETED,
+            // Emunsで定義したPENDING(int 0)かBOOKING(int 1)かCOMPLETED(int 2)のいずれか
+            'new_status' => 'required|in:0,1,2',
         ]);
 
         try{
@@ -287,7 +288,7 @@ class ProductController extends Controller
 
             // ここでステータス遷移の条件を設定
             // 予約処理 出品中から予約中に変更
-            if ($old_status === TransactionStatus::PENDING && $new_status === TransactionStatus::BOOKING)   {
+            if ($old_status === TransactionStatus::PENDING->value && $new_status === TransactionStatus::BOOKING->value )   {
                 $product->transaction_status = $new_status;
                 $product->save();
 
@@ -297,7 +298,7 @@ class ProductController extends Controller
                     ->with('flash', ['message' => TransactionStatus::BOOKING->message(), 'type' => 'success']);
 
             // 完了処理 予約中から取引完了に変更
-            }elseif($old_status === TransactionStatus::BOOKING && $new_status === TransactionStatus::COMPLETED) {   
+            }elseif($old_status === TransactionStatus::BOOKING->value && $new_status === TransactionStatus::COMPLETED->value ) {   
                 $product->transaction_status = $new_status;
                 $product->save();
 
@@ -305,6 +306,16 @@ class ProductController extends Controller
 
                 return redirect()->route('products.show', ['product' => $product->id])
                     ->with('flash', ['message' => TransactionStatus::COMPLETED->message(), 'type' => 'success']);
+
+            // 予約取消処理　予約中から出品中に変更
+            }elseif($old_status === TransactionStatus::BOOKING->value && $new_status === TransactionStatus::PENDING->value ) {   
+                $product->transaction_status = $new_status;
+                $product->save();
+
+                // TODO:出品通知メール送信処理予定
+
+                return redirect()->route('products.show', ['product' => $product->id])
+                    ->with('flash', ['message' => TransactionStatus::PENDING->message(), 'type' => 'success']);
 
             }else{
                 // 無効なステータス遷移
