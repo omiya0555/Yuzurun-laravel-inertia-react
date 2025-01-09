@@ -10,7 +10,6 @@ export default function CreateProduct({ categories, conditions }) {
     title: '',
     description: '',
     category: '',
-    is_public: true,
     condition: '',
     image_files: [],
   });
