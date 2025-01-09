@@ -7,6 +7,7 @@ import { useState, useEffect } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
     const { flash } = usePage().props;
+    console.log(usePage());
     const user = usePage().props.auth.user;
     const [isScrolled, setIsScrolled] = useState(false);
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -28,7 +29,7 @@ export default function AuthenticatedLayout({ header, children }) {
         <div className="min-h-screen flex flex-col bg-stone-100">
             <nav className={`border-b fixed top-0 left-0 w-full z-50 shadow transition duration-300 
                 ${isScrolled
-                    ? 'bg-stone-100 bg-opacity-20'
+                    ? 'bg-stone-100 bg-opacity-70'
                     : 'bg-stone-100'
                 }`}
             >
@@ -169,7 +170,7 @@ export default function AuthenticatedLayout({ header, children }) {
             </nav>
 
             {header && (
-                <header className="bg-stone-100  pt-16">
+                <header className="bg-stone-100  pt-12">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">{header}</div>
                 </header>
             )}
