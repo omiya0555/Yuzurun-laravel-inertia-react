@@ -33,6 +33,7 @@ export default function Show({ product: initialProduct }) {
             <ProductInfoSection
               product={product}
               isSeller={isSeller}
+              user={auth.user}
             />
           </div>
         </div>

@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
-import { useForm, Link } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import MessageModal from './MessageModal';
+import { createOrJoinChatRoom } from './createOrJoinChatRoom'; 
 
-function ProductInfoSection({ product, isSeller }) {
+function ProductInfoSection({ product, isSeller, user }) {
   const [transactionStatus, setTransactionStatus] = useState(product.transaction_status);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { data, setData, submit, processing } = useForm({
@@ -33,22 +34,11 @@ function ProductInfoSection({ product, isSeller }) {
     setIsModalOpen(true); // モーダルを開く
   };
 
-  const handleModalSubmit = (message) => {
-    setIsModalOpen(false);
-    console.log('選択されたメッセージ:', message);
-    submit('post', `/products/${product.id}/chat`, {
-      data: {
-        product_id: product.id,
-        message: message,
-      },
-      onSuccess: () => {
-        console.log('メッセージ送信成功');
-        window.location.href = `/chat/room/${product.id}`;
-      },
-      onError: (error) => {
-        console.error('メッセージ送信エラー:', error);
-      },
-    });
+  const handleModalSubmit = async (message) => {
+    setIsModalOpen(false); // モーダルを閉じる
+
+    // Firestoreのチャットルーム作成関数を呼び出し
+    await createOrJoinChatRoom(product, user, message);
   };
 
   return (
