@@ -20,7 +20,7 @@ function ProductImageSection({ productImageURLs }) {
     <div className="flex flex-col items-center">
       {/* メイン画像 */}
       <div
-        className="aspect-square w-full max-w-md bg-stone-200 flex items-center justify-center rounded-md overflow-hidden cursor-pointer"
+        className="aspect-square w-full max-w-[400px] bg-stone-200 flex items-center justify-center rounded-md overflow-hidden cursor-pointer"
         onClick={() => setIsGalleryOpen(true)}
       >
         <img
@@ -35,7 +35,7 @@ function ProductImageSection({ productImageURLs }) {
         {images.slice(1).map((url, index) => (
           <div
             key={index}
-            className="aspect-square max-w-20 bg-stone-200 rounded-md overflow-hidden flex items-center justify-center cursor-pointer"
+            className="aspect-square max-w-16 bg-stone-200 rounded-md overflow-hidden flex items-center justify-center cursor-pointer"
             onClick={() => setIsGalleryOpen(true)}
           >
             <img src={url} alt={`サムネイル ${index + 1}`} className="object-cover w-full h-full" />

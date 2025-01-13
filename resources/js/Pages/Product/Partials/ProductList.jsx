@@ -27,38 +27,39 @@ function ProductList({ products }) {
   const resetFilters = () => {
     setSearchTerm('');
     setSelectedCategory('');
-    setFilteredProducts(products);
   };
 
   return (
     <div className="max-w-6xl mx-auto px-4 pb-8">
       {/* フィルター */}
-      <div className="flex flex-col md:flex-row gap-2 mb-6">
+      <div className="flex flex-col md:flex-row gap-2 md:gap-4 mb-2 md:mb-6 ">
         <input
           type="text"
-          placeholder="キーワード検索"
-          className="flex-1 p-2 border border-gray-300 rounded-md"
+          placeholder="キーワードを入力"
+          className="flex-1 px-3 md:py-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300 placeholder-gray-500 text-sm"
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
         />
         <select
-          className="p-2 border border-gray-300 rounded-md"
+          className="px-3 md:py-3 border border-gray-300 rounded-md focus:outline-none focus:ring focus:ring-blue-300 text-sm bg-white"
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
         >
           <option value="">全てのカテゴリ</option>
           {CATEGORIES.map((category) => (
-            <option key={category} value={category}>{category}</option>
+            <option key={category} value={category}>
+              {category}
+            </option>
           ))}
         </select>
         <button
-          className="bg-blue-600 text-white px-4 py-2 rounded-md"
+          className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-1 md:py-3 rounded-md shadow transition duration-300"
           onClick={handleSearch}
         >
           検索
         </button>
         <button
-          className="bg-gray-300 text-gray-800 px-4 py-2 rounded-md"
+          className="bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold px-6 py-1 md:py-3 rounded-md transition duration-300"
           onClick={resetFilters}
         >
           クリア
@@ -92,7 +93,7 @@ function ProductList({ products }) {
           ))
         )}
       </div>
-      
+
       {/* ページネーション */}
       <div className="mt-8 flex justify-center">
         {products.links.map((link, index) => (

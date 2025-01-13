@@ -1,13 +1,10 @@
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
-import FlashMessage from '@/Components/FlashMessage';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 
 export default function AuthenticatedLayout({ header, children }) {
-    const { flash } = usePage().props;
-    console.log(usePage());
     const user = usePage().props.auth.user;
     const [isScrolled, setIsScrolled] = useState(false);
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
@@ -169,8 +166,6 @@ export default function AuthenticatedLayout({ header, children }) {
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">{header}</div>
                 </header>
             )}
-
-            {flash && <FlashMessage message={flash.message} type={flash.type} />}
 
             <main className="flex-grow">{children}</main>
 
