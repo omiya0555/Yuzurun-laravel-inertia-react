@@ -56,9 +56,6 @@ export default function AuthenticatedLayout({ header, children }) {
                                 <NavLink href={route('chat.index')} active={route().current('chat.index')}>
                                     チャット
                                 </NavLink>
-                                <NavLink href={route('products.index')} active={route().current('products.index')}>
-                                    取引管理
-                                </NavLink>
                             </div>
                         </div>
 
@@ -145,9 +142,6 @@ export default function AuthenticatedLayout({ header, children }) {
                         <ResponsiveNavLink href={route('chat.index')} active={route().current('chat.index')}>
                             チャット
                         </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('products.index')} active={route().current('products.index')}>
-                            取引管理
-                        </ResponsiveNavLink>
                     </div>
 
                     <div className="border-t border-gray-200 pb-1 pt-4 bg-stone-300">
@@ -186,9 +180,6 @@ export default function AuthenticatedLayout({ header, children }) {
                             </Link>
                             <Link href={route('chat.index')} className="text-sm hover:underline">
                                 チャット
-                            </Link>
-                            <Link href={route('products.index')} className="text-sm hover:underline">
-                                取引
                             </Link>
                         </div>
                     </div>

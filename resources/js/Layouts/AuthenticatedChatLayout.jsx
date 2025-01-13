@@ -37,9 +37,6 @@ export default function AuthenticatedChatLayout({ header, children }) {
                                 <NavLink href={route('chat.index')} active={route().current('chat.index')}>
                                     チャット
                                 </NavLink>
-                                <NavLink href={route('products.index')} active={route().current('products.index')}>
-                                    取引管理
-                                </NavLink>
                             </div>
                         </div>
 
@@ -125,9 +122,6 @@ export default function AuthenticatedChatLayout({ header, children }) {
                         </ResponsiveNavLink>
                         <ResponsiveNavLink href={route('chat.index')} active={route().current('chat.index')}>
                             チャット
-                        </ResponsiveNavLink>
-                        <ResponsiveNavLink href={route('products.index')} active={route().current('products.index')}>
-                            取引管理
                         </ResponsiveNavLink>
                     </div>
 
