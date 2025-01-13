@@ -54,13 +54,26 @@ function ProductInfoSection({ product, isSeller, user }) {
 
   const handleModalSubmit = async ({ method, message }) => {
     setIsModalOpen(false); // モーダルを閉じる
-
+  
     if (method === 'chat') {
       await createOrJoinChatRoom(product, user, message);
-    } else if (method === 'line') {
-      alert('LINEリンクを登録済みのメールに送信しました。');
-    } else if (method === 'signal') {
-      alert('Signalリンクを登録済みのメールに送信しました。');
+    } else {
+      router.post(
+        '/chat/send-link',
+        {
+          email: user.email,
+          method,
+        },
+        {
+          onSuccess: (page) => {
+            alert('メールが送信されました！');
+          },
+          onError: (errors) => {
+            console.error('メール送信エラー:', errors);
+            alert('メールの送信に失敗しました。');
+          },
+        }
+      );
     }
   };
 

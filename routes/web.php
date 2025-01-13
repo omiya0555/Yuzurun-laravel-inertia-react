@@ -44,6 +44,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::prefix('chat')->name('chat.')->group(function () {
         Route::get('/', [ChatController::class, 'index'])->name('index');  // チャット一覧
         Route::get('/room/{roomId}', [ChatController::class, 'show'])->name('show');  // チャットルーム
+        Route::post('/send-link', [ChatController::class, 'sendChatLink'])->name('chat.sendLink');
     });
 
     // プロファイル関連ルート
