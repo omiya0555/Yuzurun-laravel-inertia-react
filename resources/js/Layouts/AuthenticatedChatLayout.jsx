@@ -1,38 +1,16 @@
 import Dropdown from '@/Components/Dropdown';
 import NavLink from '@/Components/NavLink';
-import FlashMessage from '@/Components/FlashMessage';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink';
 import { Link, usePage } from '@inertiajs/react';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-export default function AuthenticatedLayout({ header, children }) {
-    const { flash } = usePage().props;
-    console.log(usePage());
+export default function AuthenticatedChatLayout({ header, children }) {
     const user = usePage().props.auth.user;
-    const [isScrolled, setIsScrolled] = useState(false);
     const [showingNavigationDropdown, setShowingNavigationDropdown] = useState(false);
-
-    // スクロール時に実行される処理
-    useEffect(() => {
-        const handleScroll = () => {
-            if (window.scrollY > 50) {
-                setIsScrolled(true);  // スクロールしたら透明度を追加
-            } else {
-                setIsScrolled(false);  // スクロールしていなければ透明度を戻す
-            }
-        };
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
-    }, []);
 
     return (
         <div className="min-h-screen flex flex-col bg-stone-100">
-            <nav className={`border-b fixed top-0 left-0 w-full z-50 shadow transition duration-300 
-                ${isScrolled
-                    ? 'bg-stone-100 bg-opacity-70'
-                    : 'bg-stone-100'
-                }`}
-            >
+            <nav className="border-b fixed top-0 left-0 w-full z-50 shadow transition duration-300">
                 <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div className="flex h-12 justify-between">
                         <div className="flex">
@@ -153,8 +131,8 @@ export default function AuthenticatedLayout({ header, children }) {
                         </ResponsiveNavLink>
                     </div>
 
-                    <div className="border-t border-gray-200 pb-1 pt-4 bg-stone-300">
-                        <div className="space-y-1">
+                    <div className="border-t border-gray-200 bg-stone-300 pb-1 pt-4">
+                        <div className=" space-y-1 bg-stone-300">
                             <ResponsiveNavLink href={route('profile.edit')}>プロフィール</ResponsiveNavLink>
                             <ResponsiveNavLink method="post" href={route('logout')} as="button">
                                 ログアウト
@@ -165,40 +143,12 @@ export default function AuthenticatedLayout({ header, children }) {
             </nav>
 
             {header && (
-                <header className="bg-stone-100  pt-12">
+                <header className="bg-stone-100  pt-8">
                     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">{header}</div>
                 </header>
             )}
 
-            {flash && <FlashMessage message={flash.message} type={flash.type} />}
-
             <main className="flex-grow">{children}</main>
-
-            {/* フッター */}
-            <footer className="bg-gray-800 text-white py-4">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex justify-between items-center">
-                        <p className="text-sm">&copy; 2025 Yuzurun. All rights reserved.</p>
-                        <div className="space-x-4">
-                            <Link href={route('home')} className="text-sm hover:underline">
-                                ホーム
-                            </Link>
-                            <Link href={route('products.index')} className="text-sm hover:underline">
-                                さがす
-                            </Link>
-                            <Link href={route('products.create')} className="text-sm hover:underline">
-                                出品
-                            </Link>
-                            <Link href={route('chat.index')} className="text-sm hover:underline">
-                                チャット
-                            </Link>
-                            <Link href={route('products.index')} className="text-sm hover:underline">
-                                取引
-                            </Link>
-                        </div>
-                    </div>
-                </div>
-            </footer>
         </div>
     );
 }

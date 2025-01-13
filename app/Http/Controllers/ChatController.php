@@ -39,10 +39,12 @@ class ChatController extends Controller
     {
         try {
             $userId     = Auth::id();
+            $userName   = Auth::user()->name;
 
             return Inertia::render('Chat/Room', [
                 'roomId'    => $roomId,
                 'user_id'   => $userId,
+                'user_name' => $userName,
             ]);
         } catch (\Exception $e) {
             return response()->json([
