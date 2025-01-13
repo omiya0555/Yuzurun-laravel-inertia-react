@@ -57,19 +57,19 @@ function Index({ user_id }) {
       {/* タブ部分 */}
       <div className="flex justify-around max-w-6xl mx-auto bg-stone-200 rounded-full mb-4">
         <button
-          className={`rounded-l-full flex-1 text-center py-4 font-semibold transition ${activeTab === 'all' ? 'bg-white text-stone-800 shadow' : 'text-stone-500 hover:bg-stone-300'}`}
+          className={`rounded-l-full flex-1 text-center py-2 font-semibold transition ${activeTab === 'all' ? 'bg-white text-stone-800 shadow' : 'text-stone-500 hover:bg-stone-300'}`}
           onClick={() => handleTabChange('all')}
         >
           すべて
         </button>
         <button
-          className={`flex-1 text-center py-4 font-semibold transition ${activeTab === 'give' ? 'bg-red-400 text-stone-800 shadow' : 'text-stone-500 hover:bg-red-100'}`}
+          className={`flex-1 text-center py-2 font-semibold transition ${activeTab === 'give' ? 'bg-red-400 text-stone-800 shadow' : 'text-stone-500 hover:bg-red-100'}`}
           onClick={() => handleTabChange('give')}
         >
           ゆずる
         </button>
         <button
-          className={`rounded-r-full flex-1 text-center py-4 font-semibold transition ${activeTab === 'receive' ? 'bg-blue-400 text-stone-800 shadow' : 'text-stone-500 hover:bg-blue-100'}`}
+          className={`rounded-r-full flex-1 text-center py-2 font-semibold transition ${activeTab === 'receive' ? 'bg-blue-400 text-stone-800 shadow' : 'text-stone-500 hover:bg-blue-100'}`}
           onClick={() => handleTabChange('receive')}
         >
           もらう
@@ -88,8 +88,8 @@ function Index({ user_id }) {
                 className="py-2 px-8 border-b cursor-pointer rounded-sm hover:bg-stone-300 hover:shadow-xl transition"
                 onClick={() => handleOpenRoom(room.id)}
               >
-                <h2 className="text-lg font-semibold">{room.product_title}</h2>
-                <span>
+                <h2 className="text-base md:font-semibold">{room.product_title}</h2>
+                <span className='text-sm md:text-base text-gray-600'>
                   {user_id === room.seller_id ? `申請者：${room.buyer_name}` : `出品者：${room.seller_name}`}
                 </span>
               </li>
