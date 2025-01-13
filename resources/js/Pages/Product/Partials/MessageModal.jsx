@@ -16,6 +16,9 @@ function MessageModal({ isOpen, onClose, onSubmit }) {
   return (
     <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex justify-center items-center z-50">
       <div className="bg-white rounded shadow-lg p-6 w-11/12 sm:w-96">
+        <div className='my-4'>
+          <p className='text-xl flex justify-center'>チャット方法を選びましょう！</p>
+        </div>
         <div className="flex justify-around border-b pb-2 mb-4">
           <button
             className={`py-2 px-4 font-bold ${selectedTab === 'chat' ? 'border-b-4 border-purple-600 text-purple-600' : 'text-gray-500'}`}
