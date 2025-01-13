@@ -3,11 +3,13 @@ import { db } from '@/firebaseConfig';
 import { collection, query, where, getDocs, onSnapshot, addDoc, serverTimestamp } from 'firebase/firestore';
 import { Head, router } from '@inertiajs/react';
 import AuthenticatedChatLayout from '@/Layouts/AuthenticatedChatLayout';
+import EmojiPicker from 'emoji-picker-react';
 
 function Room({ roomId, user_id, user_name }) {
   const [roomInfo, setRoomInfo] = useState(null); // ルーム情報を格納
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
+  const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const [error, setError] = useState('');
   const chatEndRef = useRef(null); // 自動スクロール用
 
@@ -84,6 +86,11 @@ function Room({ roomId, user_id, user_name }) {
     }
   };
 
+  const handleEmojiClick = (emojiObject) => {
+    setNewMessage(newMessage + emojiObject.emoji); // エモジをテキストに追加
+    setIsEmojiPickerOpen(false); // エモジピッカーを閉じる
+  };
+
   return (
     <AuthenticatedChatLayout className="bg-stone-100 h-screen flex flex-col">
       <Head title="チャットルーム" />
@@ -158,6 +165,13 @@ function Room({ roomId, user_id, user_name }) {
                 onChange={(e) => setNewMessage(e.target.value)}
               />
               <button
+                type="button"
+                className="bg-white border border-gray-300 p-2 rounded hover:bg-gray-200"
+                onClick={() => setIsEmojiPickerOpen(!isEmojiPickerOpen)}
+              >
+                😊
+              </button>
+              <button
                 type="submit"
                 className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-800 focus:outline-none focus:ring focus:ring-blue-300 transition"
                 disabled={!newMessage.trim()}
@@ -165,6 +179,11 @@ function Room({ roomId, user_id, user_name }) {
                 送信
               </button>
             </form>
+            {isEmojiPickerOpen && (
+              <div className="absolute bottom-16 right-0">
+                <EmojiPicker onEmojiClick={handleEmojiClick} />
+              </div>
+            )}
           </div>
         </div>
       </div>
