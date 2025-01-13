@@ -1,10 +1,11 @@
+import WelcomeButton from '@/Components/WelcomeButton';
 import WelcomeInfo from '@/Components/WelcomeInfo';
 import { Link, Head } from '@inertiajs/react';
 
 export default function Welcome() {
     return (
         <div className="min-h-screen flex flex-col bg-stone-100">
-            <Head title="Welcome to Omiya Market" />
+            <Head title="Welcome to Yuzurun" />
             <header className="shadow">
                 <div className="max-w-7xl mx-auto px-4 py-1 flex justify-between items-center">
                     <h1 className="text-xl font-bold">
@@ -34,27 +35,20 @@ export default function Welcome() {
                         <h1 className="md:text-4xl text-2xl font-extrabold text-white drop-shadow-lg flex space-x-4">
                             <span className='text-red-500'>Welcome</span>
                             <span className='text-stone-100'>to</span>
-                            <span className='text-blue-500'>Yuzurun!</span>
+                            <span className='text-blue-500'>ゆずるん!</span>
                         </h1>
                     </div>
                 </div>
 
                 <div className="mt-16">
-                    <h2 className="text-4xl font-bold text-center mb-8">Yuzurunとは？</h2>
-                    <p className="text-center text-xl text-gray-700">
+                    <h2 className="text-4xl font-bold text-center mb-8">「ゆずるん」とは？</h2>
+                    <p className="text-center text-base md:text-xl text-gray-700">
                         日常の中で<span className="font-bold">まだ使える「モノ」</span>を捨てるのはもったいない。<br /><br />
                         次の人に<span className="text-red-600 font-bold">無料で譲ったり</span>、<br /><br />
                         必要な「モノ」を<span className="text-blue-600 font-bold">無料で受け取る</span>ことができます。
                     </p>
-                    <div className="flex justify-center my-24">
-                        <Link
-                            href={route('register')}
-                            className="bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-md transition"
-                        >
-                            無料登録してはじめる
-                        </Link>
-                    </div>
 
+                    <WelcomeButton>無料登録してはじめる</WelcomeButton>
 
                     <div className='px-8'>
                         <WelcomeInfo />
@@ -62,14 +56,7 @@ export default function Welcome() {
 
                     <hr className='my-24' />
 
-                    <div className="flex justify-center">
-                        <Link
-                            href={route('register')}
-                            className="bg-red-600 hover:bg-red-800 text-white font-bold py-3 px-6 rounded-md transition"
-                        >
-                            無料登録してはじめる
-                        </Link>
-                    </div>
+                    <WelcomeButton>無料登録してはじめる</WelcomeButton>
 
                 </div>
             </main>
