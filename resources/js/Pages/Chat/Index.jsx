@@ -53,7 +53,7 @@ function Index({ user_id }) {
       }
     >
       <Head title="チャット一覧" />
-      
+
       {/* タブ部分 */}
       <div className="flex justify-around max-w-6xl mx-auto bg-stone-200 rounded-full mb-4">
         <button
@@ -83,16 +83,26 @@ function Index({ user_id }) {
             <li className="py-8 text-center text-stone-600">チャットルームはありません。</li>
           ) : (
             filteredRooms.map((room) => (
-              <li
-                key={room.id}
-                className="py-2 px-8 border-b cursor-pointer rounded-sm hover:bg-stone-300 hover:shadow-xl transition"
+              <div
+                className='flex border-b cursor-pointer rounded-sm hover:bg-stone-300 hover:shadow-xl transition'
                 onClick={() => handleOpenRoom(room.id)}
               >
-                <h2 className="text-base md:font-semibold">{room.product_title}</h2>
-                <span className='text-sm md:text-base text-gray-600'>
-                  {user_id === room.seller_id ? `申請者：${room.buyer_name}` : `出品者：${room.seller_name}`}
-                </span>
-              </li>
+                <img 
+                  src={room.product_top_image_url}
+                  className="aspect-square object-cover w-20 h-20"
+                >
+                </img>
+                <li
+                  key={room.id}
+                  className="w-full py-2 px-8"
+                >
+                  <h2 className="text-base md:font-semibold">{room.product_title}</h2>
+                  <span className='text-sm md:text-base text-gray-600'>
+                    {user_id === room.seller_id ? `申請者：${room.buyer_name}` : `出品者：${room.seller_name}`}
+                  </span>
+                </li>
+              </div>
+
             ))
           )}
         </ul>

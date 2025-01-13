@@ -11,6 +11,15 @@ export async function createOrJoinChatRoom(product, buyer, initialMessage) {
     const roomDocRef = doc(db, 'chat_rooms', roomId);
     const roomSnapshot = await getDoc(roomDocRef);
 
+    // product.image_urlsをパースして最初の画像URLを取得
+    let productTopImageUrl = '';
+    try {
+      const imageUrls = JSON.parse(product.image_urls || '[]');
+      productTopImageUrl = imageUrls.length > 0 ? imageUrls[0] : 'https://placehold.jp/300x300.png'; // 画像がない場合のデフォルト
+    } catch (error) {
+      console.error('画像URLの解析エラー:', error);
+    }
+
     if (roomSnapshot.exists()) {
       const proceed = confirm('チャットルームが既に存在します。チャットルームに移動しますか？');
       if (!proceed) {
@@ -22,6 +31,7 @@ export async function createOrJoinChatRoom(product, buyer, initialMessage) {
       await setDoc(roomDocRef, {
         id: roomId,
         product_title: product.title,
+        product_top_image_url: productTopImageUrl,
         buyer_id: buyer.id,
         buyer_name: buyer.name,
         seller_id: product.seller_id,
