@@ -72,7 +72,10 @@ function ProductInfoSection({ product, isSeller, user }) {
   return (
     <div className="max-w-[400px] min-w-[320px] mx-auto space-y-6 bg-stone-100">
       {/* 商品情報カード */}
-      <ProductInfoCard product={product} />
+      <ProductInfoCard 
+        product={product}
+        transactionStatus={transactionStatus} 
+      />
 
       {/* ボタンセクション */}
       <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-center sm:space-x-4">

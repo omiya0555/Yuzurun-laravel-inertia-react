@@ -1,4 +1,4 @@
-function ProductInfoCard({ product }) {
+function ProductInfoCard({ product, transactionStatus }) {
   return (
     <div className="bg-white rounded-md shadow-sm overflow-hidden p-6 sm:p-8">
       <h3 className="text-2xl font-semibold text-center sm:text-left">{product.title}</h3>
