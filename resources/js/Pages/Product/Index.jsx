@@ -3,8 +3,6 @@ import { Head } from '@inertiajs/react';
 import ProductList from './Partials/ProductList';
 
 export default function Index({ products }) {
-  console.log(products.data.length);
-
   return (
       <AuthenticatedLayout
         header={

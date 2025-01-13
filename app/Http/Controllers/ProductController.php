@@ -22,10 +22,8 @@ class ProductController extends Controller
     public function index(): \Inertia\Response
     {
         try {
-            // 出品中、予約中の商品一覧を取得
-            $products = Product::where('transaction_status', TransactionStatus::PENDING)
-            ->orWhere('transaction_status', TransactionStatus::BOOKING)
-            ->with('seller')
+            // 商品一覧を取得
+            $products = Product::with('seller')
             ->orderBy('created_at', 'desc')
             ->paginate(20);
 
