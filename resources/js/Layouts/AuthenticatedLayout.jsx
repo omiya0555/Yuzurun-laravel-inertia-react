@@ -178,8 +178,8 @@ export default function AuthenticatedLayout({ header, children }) {
             <footer className="bg-gray-800 text-white py-4">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center">
-                        <p className="text-sm">&copy; 2025 Yuzurun. All rights reserved.</p>
-                        <div className="space-x-4">
+                        <p className="text-xs md:text-sm">&copy; 2025 Yuzurun. All rights reserved.</p>
+                        <div className="space-x-4 text-xs md:text-sm">
                             <Link href={route('home')} className="text-sm hover:underline">
                                 ホーム
                             </Link>

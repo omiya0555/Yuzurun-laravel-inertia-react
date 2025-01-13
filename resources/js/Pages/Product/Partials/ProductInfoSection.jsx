@@ -69,11 +69,11 @@ function ProductInfoSection({ product, isSeller, user }) {
   };
 
   return (
-    <div className="max-w-[400px] min-w-[250px] mx-auto space-y-6 bg-stone-100">
+    <div className="max-w-[400px] min-w-[320px] mx-auto space-y-6 bg-stone-100">
       {/* 商品情報カード */}
       <div className="bg-white rounded-md shadow-sm overflow-hidden p-6 sm:p-8">
         <h3 className="text-2xl font-semibold text-center sm:text-left">{product.title}</h3>
-        <p className="text-gray-700 text-sm sm:text-base mt-2">{product.description}</p>
+        <p className="text-gray-700 w-full text-sm sm:text-base mt-2">{product.description}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
           <p className="text-sm font-semibold">出品者: <span className="text-gray-600">{product.seller.name}</span></p>
           <p className="text-sm font-semibold">場所: <span className="text-gray-600">{product.location_name}</span></p>
@@ -103,7 +103,7 @@ function ProductInfoSection({ product, isSeller, user }) {
                 </select>
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white font-bold py-2 px-6 rounded-md hover:bg-blue-800 transition"
+                  className="bg-blue-600 w-full text-white font-bold py-2 px-6 rounded-md hover:bg-blue-800 transition"
                   disabled={processing}
                 >
                   変更を確定する
@@ -123,14 +123,14 @@ function ProductInfoSection({ product, isSeller, user }) {
                 </select>
                 <button
                   type="submit"
-                  className="bg-blue-600 text-white font-bold py-2 px-6 rounded-md hover:bg-blue-800 transition"
+                  className="bg-blue-600 w-full text-white font-bold py-2 px-6 rounded-md hover:bg-blue-800 transition"
                   disabled={processing}
                 >
                   変更を確定する
                 </button>
               </form>
             ) : (
-              <p className="text-green-600 font-bold text-center">取引は完了しています。</p>
+              <p className="text-green-600 w-full font-bold text-center">取引は完了しています。</p>
             )}
           </>
         ) : (
@@ -145,7 +145,7 @@ function ProductInfoSection({ product, isSeller, user }) {
             ) : transactionStatus === 0 ? (
               <button
                 onClick={handleRequest}
-                className="bg-blue-600 text-white font-bold py-2 px-6 rounded-md hover:bg-blue-800 transition"
+                className="bg-blue-600 w-full text-white font-bold py-2 px-6 rounded-md hover:bg-blue-800 transition"
                 disabled={processing}
               >
                 取引を申請する
