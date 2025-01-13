@@ -1,15 +1,32 @@
-import React, { useState } from 'react';
-import { useForm } from '@inertiajs/react';
+import React, { useState, useEffect } from 'react';
+import { useForm, router } from '@inertiajs/react';
+import { db } from '@/firebaseConfig';
+import { doc, getDoc } from 'firebase/firestore';
 import MessageModal from './MessageModal';
-import { createOrJoinChatRoom } from './createOrJoinChatRoom'; 
+import { createOrJoinChatRoom } from './createOrJoinChatRoom';
 
 function ProductInfoSection({ product, isSeller, user }) {
   const [transactionStatus, setTransactionStatus] = useState(product.transaction_status);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [chatRoomExists, setChatRoomExists] = useState(false);
   const { data, setData, submit, processing } = useForm({
     product_id: product.id,
     new_status: product.transaction_status,
   });
+
+  useEffect(() => {
+    const checkChatRoomExists = async () => {
+      const roomId = `${product.id}_${user.id}`;
+      const chatRoomRef = doc(db, 'chat_rooms', roomId);
+      const chatRoomSnap = await getDoc(chatRoomRef);
+
+      if (chatRoomSnap.exists()) {
+        setChatRoomExists(true);
+      }
+    };
+
+    checkChatRoomExists();
+  }, [product.id, user.id]);
 
   const handleStatusChange = (e) => {
     setData('new_status', parseInt(e.target.value));
@@ -34,40 +51,48 @@ function ProductInfoSection({ product, isSeller, user }) {
     setIsModalOpen(true); // モーダルを開く
   };
 
-  const handleModalSubmit = async (message) => {
+  const handleModalSubmit = async ({ method, message }) => {
     setIsModalOpen(false); // モーダルを閉じる
 
-    // Firestoreのチャットルーム作成関数を呼び出し
-    await createOrJoinChatRoom(product, user, message);
+    if (method === 'chat') {
+      await createOrJoinChatRoom(product, user, message);
+    } else if (method === 'line') {
+      alert('LINEリンクを登録済みのメールに送信しました。');
+    } else if (method === 'signal') {
+      alert('Signalリンクを登録済みのメールに送信しました。');
+    }
+  };
+
+  const handleGoToChatRoom = () => {
+    const roomId = `${product.id}_${user.id}`;
+    router.get(`/chat/room/${roomId}`);
   };
 
   return (
-    <div className="space-y-4 text-stone-800">
-      <h3 className="text-2xl pl-6 font-semibold">{product.title}</h3>
-      <p className="text-base pl-6">{product.description}</p>
-      <p className="text-sm pl-6">出品者: {product.seller.name}</p>
-      <p className="text-sm pl-6">場所: {product.location_name}</p>
-      <p className="text-sm pl-6">カテゴリー: {product.category}</p>
-      <p className="text-sm pl-6">状態: {product.condition}</p>
-      <p className="text-sm pl-6">
-        出品日: {new Date(product.created_at).toLocaleDateString()}
-      </p>
-      <p className="text-base pl-6 font-bold text-red-600">
-        現在のステータス:{' '}
-        {transactionStatus === 0
-          ? '出品中'
-          : transactionStatus === 1
-          ? '予約中'
-          : '取引完了'}
-      </p>
+    <div className="max-w-[400px] min-w-[250px] mx-auto space-y-6 bg-stone-100">
+      {/* 商品情報カード */}
+      <div className="bg-white rounded-md shadow-sm overflow-hidden p-6 sm:p-8">
+        <h3 className="text-2xl font-semibold text-center sm:text-left">{product.title}</h3>
+        <p className="text-gray-700 text-sm sm:text-base mt-2">{product.description}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+          <p className="text-sm font-semibold">出品者: <span className="text-gray-600">{product.seller.name}</span></p>
+          <p className="text-sm font-semibold">場所: <span className="text-gray-600">{product.location_name}</span></p>
+          <p className="text-sm font-semibold">カテゴリー: <span className="text-gray-600">{product.category}</span></p>
+          <p className="text-sm font-semibold">状態: <span className="text-gray-600">{product.condition}</span></p>        </div>
+        <p className="mt-4 text-center text-lg font-bold text-red-600">
+          現在のステータス:{' '}
+          {transactionStatus === 0 ? '出品中' : transactionStatus === 1 ? '予約中' : '取引完了'}
+        </p>
+      </div>
 
-      <div className="flex justify-start pl-6">
+      {/* ボタンセクション */}
+      <div className="flex flex-col space-y-4 sm:space-y-0 sm:flex-row sm:justify-center sm:space-x-4">
         {isSeller ? (
-          <div>
+          <>
             {transactionStatus === 0 ? (
-              <form onSubmit={handleStatusSubmit} className="flex flex-col items-start space-y-2">
+              <form onSubmit={handleStatusSubmit} className="flex flex-col w-full space-y-4">
                 <select
-                  className="block w-full px-4 py-2 mt-1 border rounded-md"
+                  className="px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-200"
                   value={data.new_status}
                   onChange={handleStatusChange}
                   required
@@ -78,16 +103,16 @@ function ProductInfoSection({ product, isSeller, user }) {
                 </select>
                 <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded mt-2 transition"
+                  className="bg-blue-600 text-white font-bold py-2 px-6 rounded-md hover:bg-blue-800 transition"
                   disabled={processing}
                 >
                   変更を確定する
                 </button>
               </form>
             ) : transactionStatus === 1 ? (
-              <form onSubmit={handleStatusSubmit} className="flex flex-col items-start space-y-2">
+              <form onSubmit={handleStatusSubmit} className="flex flex-col w-full space-y-4">
                 <select
-                  className="block w-full px-4 py-2 mt-1 border rounded-md"
+                  className="px-4 py-2 border rounded-md focus:outline-none focus:ring focus:ring-blue-200"
                   value={data.new_status}
                   onChange={handleStatusChange}
                   required
@@ -98,37 +123,37 @@ function ProductInfoSection({ product, isSeller, user }) {
                 </select>
                 <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded mt-2 transition"
+                  className="bg-blue-600 text-white font-bold py-2 px-6 rounded-md hover:bg-blue-800 transition"
                   disabled={processing}
                 >
                   変更を確定する
                 </button>
               </form>
             ) : (
-              <p className="text-green-600 font-bold">取引は完了しています。</p>
+              <p className="text-green-600 font-bold text-center">取引は完了しています。</p>
             )}
-          </div>
+          </>
         ) : (
-          <div>
-            {transactionStatus === 0 ? (
+          <>
+            {chatRoomExists ? (
+              <button
+                onClick={handleGoToChatRoom}
+                className="bg-green-600 w-full text-white font-bold py-2 px-6 rounded-md hover:bg-green-800 transition"
+              >
+                チャットルームへ移動
+              </button>
+            ) : transactionStatus === 0 ? (
               <button
                 onClick={handleRequest}
-                className="bg-blue-600 hover:bg-blue-800 text-white font-bold py-2 px-4 rounded transition"
+                className="bg-blue-600 text-white font-bold py-2 px-6 rounded-md hover:bg-blue-800 transition"
                 disabled={processing}
               >
                 取引を申請する
               </button>
-            ) : transactionStatus === 1 ? (
-              <button
-                disabled
-                className="bg-stone-400 text-white font-bold py-2 px-4 rounded cursor-not-allowed"
-              >
-                予約中
-              </button>
             ) : (
-              <p className="text-green-600 font-bold">取引は完了しています。</p>
+              <p className="text-green-600 font-bold text-center">取引は完了しています。</p>
             )}
-          </div>
+          </>
         )}
       </div>
 
