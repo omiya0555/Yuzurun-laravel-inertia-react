@@ -84,6 +84,7 @@ function Index({ user_id }) {
           ) : (
             filteredRooms.map((room) => (
               <div
+                key={room.id}
                 className='flex border-b cursor-pointer rounded-sm hover:bg-stone-300 hover:shadow-xl transition'
                 onClick={() => handleOpenRoom(room.id)}
               >
