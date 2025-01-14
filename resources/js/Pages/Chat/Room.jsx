@@ -13,15 +13,13 @@ function Room({ roomId, user_id, user_name }) {
   const [isEmojiPickerOpen, setIsEmojiPickerOpen] = useState(false);
   const [error, setError] = useState('');
   const chatEndRef = useRef(null); // 自動スクロール用
+  const overlay = document.createElement('div');
+  overlay.className = 'loading-overlay';
+  document.body.appendChild(overlay);
 
   // Firestore のチャットルーム情報を取得
   useEffect(() => {
     const fetchRoomInfo = async () => {
-
-      const overlay = document.createElement('div');
-      overlay.className = 'loading-overlay';
-      document.body.appendChild(overlay);
-
       NProgress.start();
       overlay.classList.add('active');
 
@@ -78,10 +76,6 @@ function Room({ roomId, user_id, user_name }) {
   }, [messages]);
 
   const handleSendMessage = async (e) => {
-
-    NProgress.start();
-    overlay.classList.add('active');
-
     e.preventDefault();
     setError('');
     if (!newMessage.trim()) return;
@@ -93,9 +87,12 @@ function Room({ roomId, user_id, user_name }) {
       created_at: serverTimestamp(),
     };
 
+    NProgress.start();
+    overlay.classList.add('active');
     try {
       await addDoc(collection(db, `chat_rooms/${roomId}/chat_messages`), messageData);
       setNewMessage('');
+      console.log('メッセージを送信しました。');
     } catch (error) {
       console.error('メッセージ送信エラー:', error);
       setError('メッセージの送信に失敗しました。もう一度お試しください。');
