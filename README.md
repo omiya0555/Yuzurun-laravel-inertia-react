@@ -25,7 +25,7 @@ Yuzurun は、物品の譲渡をスムーズに行うための Web アプリケ�
 
 ### 1. リポジトリのクローン
 ```
-git clone https://github.com/omiya0555/yuzurun.git
+git clone https://github.com/omiya0555/Yuzurun-laravel-inertia-react.git
 cd yuzurun
 ```
 
