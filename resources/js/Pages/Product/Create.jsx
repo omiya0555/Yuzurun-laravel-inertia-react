@@ -14,11 +14,22 @@ export default function CreateProduct({ categories, conditions }) {
     image_files: [],
   });
 
+  const overlay = document.createElement('div');
+  overlay.className = 'loading-overlay';
+  document.body.appendChild(overlay);
+
   const submit = (e) => {
-    console.log(data);
     e.preventDefault();
+    overlay.classList.add('active');
+
     post(route('products.store'), {
-      onSuccess: () => reset(),
+      onSuccess: () => {
+        reset();
+        overlay.classList.remove('active');
+      },
+      onError: () => {
+        overlay.classList.remove('active');
+      },
       preserveScroll: true,
     });
   };
@@ -128,9 +139,8 @@ export default function CreateProduct({ categories, conditions }) {
             <button
               type="submit"
               disabled={processing}
-              className={`w-full bg-red-600 text-white font-bold mt-4 px-8 py-3 rounded-md hover:bg-red-800 transition ${
-                processing ? 'opacity-50 cursor-not-allowed' : ''
-              }`}
+              className={`w-full bg-red-600 text-white font-bold mt-4 px-8 py-3 rounded-md hover:bg-red-800 transition ${processing ? 'opacity-50 cursor-not-allowed' : ''
+                }`}
             >
               {processing ? '送信中...' : '出品する'}
             </button>

@@ -11,7 +11,7 @@ const appName = import.meta.env.VITE_APP_NAME || 'Laravel';
 
 // NProgress の設定
 NProgress.configure({
-    showSpinner: false, // スピナー非表示
+    showSpinner: true, // スピナー非表示
     minimum: 0.1,       // 初期状態の最小値
     speed: 500,         // バーの進行速度(ms)
     trickleSpeed: 200,  // 自動トリクル速度
@@ -20,13 +20,11 @@ NProgress.configure({
 // 画面遷移イベントのフック
 router.on('start', () => {
     NProgress.start();
-    overlay.classList.add('active');
 });
 
 router.on('finish', (event) => {
     if (!event.detail.visit.completed) return; // 完了しない場合、バーを止めない
     NProgress.done(); 
-    overlay.classList.remove('active'); 
 });
 
 createInertiaApp({

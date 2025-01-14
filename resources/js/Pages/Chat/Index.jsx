@@ -9,21 +9,34 @@ function Index({ user_id }) {
   const [filteredRooms, setFilteredRooms] = useState([]); // 表示するルーム
   const [activeTab, setActiveTab] = useState('all'); // "all" | "give" | "receive"
 
+  const overlay = document.createElement('div');
+  overlay.className = 'loading-overlay';
+  document.body.appendChild(overlay);
+
   useEffect(() => {
+    overlay.classList.add('active');
     const chatRoomsRef = collection(db, 'chat_rooms');
     const q = query(
       chatRoomsRef,
       or(where('buyer_id', '==', user_id), where('seller_id', '==', user_id))
     );
 
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const rooms = snapshot.docs.map((doc) => ({
-        id: doc.id, // roomId
-        ...doc.data(),
-      }));
-      setChatRooms(rooms);
-      setFilteredRooms(rooms); // 初期表示は「すべて」
-    });
+    const unsubscribe = onSnapshot(
+      q,
+      (snapshot) => {
+        const rooms = snapshot.docs.map((doc) => ({
+          id: doc.id, // roomId
+          ...doc.data(),
+        }));
+        setChatRooms(rooms);
+        setFilteredRooms(rooms); // 初期表示は「すべて」
+        overlay.classList.remove('active');
+      },
+      (error) => {
+        console.log('チャットルーム取得エラー');
+        overlay.classList.remove('active');
+      }
+    );
 
     return () => unsubscribe();
   }, [user_id]);
@@ -88,7 +101,7 @@ function Index({ user_id }) {
                 className='flex border-b cursor-pointer rounded-sm hover:bg-stone-300 hover:shadow-xl transition'
                 onClick={() => handleOpenRoom(room.id)}
               >
-                <img 
+                <img
                   src={room.product_top_image_url}
                   className="aspect-square object-cover w-20 h-20"
                 >

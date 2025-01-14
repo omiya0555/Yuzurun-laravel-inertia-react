@@ -4,6 +4,7 @@ import { collection, query, where, getDocs, onSnapshot, addDoc, serverTimestamp 
 import { Head, router } from '@inertiajs/react';
 import AuthenticatedChatLayout from '@/Layouts/AuthenticatedChatLayout';
 import EmojiPicker from 'emoji-picker-react';
+import NProgress from 'nprogress';
 
 function Room({ roomId, user_id, user_name }) {
   const [roomInfo, setRoomInfo] = useState(null); // ルーム情報を格納
@@ -16,6 +17,14 @@ function Room({ roomId, user_id, user_name }) {
   // Firestore のチャットルーム情報を取得
   useEffect(() => {
     const fetchRoomInfo = async () => {
+
+      const overlay = document.createElement('div');
+      overlay.className = 'loading-overlay';
+      document.body.appendChild(overlay);
+
+      NProgress.start();
+      overlay.classList.add('active');
+
       const chatRoomsRef = collection(db, 'chat_rooms'); // chat_roomsコレクション参照
       const q = query(chatRoomsRef, where('id', '==', roomId)); // idがroomIdと一致するドキュメントを取得
 
@@ -31,6 +40,9 @@ function Room({ roomId, user_id, user_name }) {
       } catch (error) {
         console.error('ルーム情報取得エラー:', error);
         setError('ルーム情報の取得に失敗しました。');
+      } finally {
+        NProgress.done();
+        overlay.classList.remove('active');
       }
     };
 
@@ -66,6 +78,10 @@ function Room({ roomId, user_id, user_name }) {
   }, [messages]);
 
   const handleSendMessage = async (e) => {
+
+    NProgress.start();
+    overlay.classList.add('active');
+
     e.preventDefault();
     setError('');
     if (!newMessage.trim()) return;
@@ -83,6 +99,9 @@ function Room({ roomId, user_id, user_name }) {
     } catch (error) {
       console.error('メッセージ送信エラー:', error);
       setError('メッセージの送信に失敗しました。もう一度お試しください。');
+    } finally {
+      NProgress.done();
+      overlay.classList.remove('active');
     }
   };
 
