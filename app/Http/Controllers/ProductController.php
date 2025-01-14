@@ -67,13 +67,13 @@ class ProductController extends Controller
         $validatedData = $request->validate([
             'title'         => 'required|string|max:255',
             'description'   => 'nullable|string|max:300',
+            'location'      => 'required|string',
             'category'      => 'required|string',
             'condition'     => 'required|string',
             'image_files'   => 'required|array|max:5',
             'image_files.*' => 'required|image|mimes:jpg,jpeg,png,gif,webp|max:10240',
             'latitude'      => 'nullable|numeric',
             'longitude'     => 'nullable|numeric',
-            'location_name' => 'nullable|string',
         ]);
 
         // カテゴリとコンディションのバリデーション
@@ -106,6 +106,7 @@ class ProductController extends Controller
                 $product = Product::create([
                     'title'                 => $validatedData['title'],
                     'description'           => $validatedData['description'],
+                    'location_name'         => $validatedData['location'],
                     'category'              => $validatedData['category'],
                     'image_urls'            => json_encode($imageUrls),
                     'transaction_status'    => TransactionStatus::PENDING,      // 出品中
@@ -193,7 +194,7 @@ class ProductController extends Controller
                 'image_urls'    => 'required|array',
                 'latitude'      => 'nullable|numeric',
                 'longitude'     => 'nullable|numeric',
-                'location_name' => 'nullable|string',
+                'location'      => 'nullable|string',
             ]);
 
             // カテゴリとコンディションのバリデーション
@@ -226,6 +227,7 @@ class ProductController extends Controller
                     $product->update([
                         'title'                 => $validatedData['title'],
                         'description'           => $validatedData['description'],
+                        'location'              => $validatedData['location'],
                         'category'              => $validatedData['category'],
                         'image_urls'            => json_encode($imageUrls),
                         'condition'             => $validatedData['condition'],
@@ -291,6 +293,8 @@ class ProductController extends Controller
                 $product->save();
 
                 // TODO:予約通知メール送信処理予定
+                // 本当なら、予約する際に予約相手を選択する必要がある。
+                // その相手をbuyerとして登録しておいて、すぐに宛先メール情報取得に活用する。
                 
                 return redirect()->route('products.show', ['product' => $product->id])
                     ->with('flash', ['message' => TransactionStatus::BOOKING->message(), 'type' => 'success']);
@@ -301,6 +305,7 @@ class ProductController extends Controller
                 $product->save();
 
                 // TODO:完了通知メール送信処理予定
+                // 本当なら…　　上と同様
 
                 return redirect()->route('products.show', ['product' => $product->id])
                     ->with('flash', ['message' => TransactionStatus::COMPLETED->message(), 'type' => 'success']);
@@ -309,8 +314,6 @@ class ProductController extends Controller
             }elseif($old_status === TransactionStatus::BOOKING->value && $new_status === TransactionStatus::PENDING->value ) {   
                 $product->transaction_status = $new_status;
                 $product->save();
-
-                // TODO:出品通知メール送信処理予定
 
                 return redirect()->route('products.show', ['product' => $product->id])
                     ->with('flash', ['message' => TransactionStatus::PENDING->message(), 'type' => 'success']);

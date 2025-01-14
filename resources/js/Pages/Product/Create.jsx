@@ -9,6 +9,7 @@ export default function CreateProduct({ categories, conditions }) {
   const { data, setData, post, processing, errors, reset } = useForm({
     title: '',
     description: '',
+    location: '',
     category: '',
     condition: '',
     image_files: [],
@@ -90,6 +91,21 @@ export default function CreateProduct({ categories, conditions }) {
               required
             />
             {errors.description && <p className="text-red-500 text-sm mt-2">{errors.description}</p>}
+          </div>
+
+          {/* 受け渡し場所 */}
+          <div>
+            <InputLabel htmlFor="location" value="受け渡し場所" />
+            <input
+              type="text"
+              id="location"
+              name="location"
+              value={data.location}
+              className="mt-1 block w-full border-gray-300 rounded-lg shadow-sm focus:ring-indigo-500 focus:border-indigo-500"
+              onChange={(e) => setData('location', e.target.value)}
+              required
+            />
+            {errors.location && <p className="text-red-500 text-sm mt-2">{errors.location}</p>}
           </div>
 
           {/* カテゴリー */}
