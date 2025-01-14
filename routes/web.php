@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Auth\SocialAuthController;
 
 Route::get('/', function () {
     // ログインしている場合は `/home` にリダイレクト
@@ -19,6 +20,12 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('/auth/google/redirect', [SocialAuthController::class, 'redirectToGoogle'])->name('google.login');
+Route::get('/auth/google/callback', [SocialAuthController::class, 'handleGoogleCallback']);
+
+Route::get('/auth/slack/redirect', [SocialAuthController::class, 'redirectToSlack'])->name('slack.login');
+Route::get('/auth/slack/callback', [SocialAuthController::class, 'handleSlackCallback']);
 
 // ログイン・認証済みのルート
 Route::middleware(['auth', 'verified'])->group(function () {
