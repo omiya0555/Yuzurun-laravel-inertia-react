@@ -8,6 +8,10 @@ use Inertia\Inertia;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\Auth\SocialAuthController;
 
+Route::get('/health-check', function () {
+    return response()->json(['status' => 'ok'], 200);
+});
+
 Route::get('/', function () {
     // ログインしている場合は `/home` にリダイレクト
     if (auth()->check()) {
