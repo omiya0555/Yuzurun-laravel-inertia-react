@@ -5,6 +5,7 @@ import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import TermsOfServiceModal from './TermsOfServiceModal'; // 利用規約モーダルのインポート
+import Checkbox from '@/Components/Checkbox';
 
 export default function Register() {
     const [isModalOpen, setIsModalOpen] = useState(false); // モーダル状態
@@ -92,16 +93,14 @@ export default function Register() {
 
                 <div className="mt-4">
                     <label className="flex items-center space-x-2">
-                        <input
-                            type="checkbox"
-                            className="form-checkbox rounded-sm"
+                        <Checkbox
                             checked={isAgreed}
                             onChange={() => setIsAgreed(!isAgreed)}
                         />
                         <span className="text-sm text-gray-600">利用規約に同意します</span>
                         <button
                             type="button"
-                            className="underline text-blue-500 hover:text-blue-700 text-sm"
+                            className="underline text-sm text-gray-600 hover:text-gray-900"
                             onClick={() => setIsModalOpen(true)}
                         >
                             詳細を確認
