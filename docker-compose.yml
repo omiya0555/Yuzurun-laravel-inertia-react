@@ -12,6 +12,9 @@ services:
       - internal
 
   web:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
     image: nginx:latest
     volumes:
       - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
