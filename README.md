@@ -4,6 +4,7 @@
 Yuzurun は、物品の譲渡をスムーズに行うための Web アプリケーションです。商品はすべて無料であり、
 配送方法も個人間で決定します。本アプリでは、出品者とユーザー間でのチャット機能を備えています。
 アプリ内チャット以外の選択肢として、LINE や Signal の連絡リンクを活用してコミュニケーションを円滑に進められるように設計されています。
+なお、実際は私のものを譲るための専用アプリに改変されています。
 
 ## 主な機能
 - ユーザー認証 (通常ログイン/Google/Slack 認証)
@@ -54,13 +55,14 @@ php artisan migrate --seed
 ```
 
 ### 6. OAuth 認証設定
-Google、Slack などの認証を使用する場合は `config/services.php` に設定を追加し、`.env` ファイルに以下を記述します。
+Google、Slack などの認証を使用する場合は `config/services.php` に設定を追加し、`.env` ファイルに項目を記述します。
 
 ### 7. Firebase の設定
 - `firebaseConfig.js` ファイルに Firebase プロジェクト情報を記入してください。
 
 ## 実行方法
 ### 開発環境サーバー起動
+docker-compose.ymlをうまい具合に設定してください。泣
 ```
 php artisan serve
 npm run dev
