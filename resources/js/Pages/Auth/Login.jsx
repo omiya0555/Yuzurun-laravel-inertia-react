@@ -113,7 +113,8 @@ export default function Login({ status, canResetPassword }) {
 
             <div className="flex space-x-4">
                 <button
-                    onClick={() => window.location.href = route('auth.google.redirect')}
+                    disabled
+                    // onClick={() => window.location.href = route('google.login')}
                     className="flex items-center justify-center w-full py-2 bg-stone-400 hover:bg-red-500 hover:text-white hover:shadow-lg hover:font-bold rounded-md transition duration-300"
                 >
                     <img src="/images/google.svg" alt="Google Icon" className="w-5 h-5 mr-2" />
@@ -121,7 +122,8 @@ export default function Login({ status, canResetPassword }) {
                 </button>
 
                 <button
-                    onClick={() => window.location.href = route('auth.slack.redirect')}
+                    disabled
+                    // onClick={() => window.location.href = route('slack.login')}
                     className="flex items-center justify-center w-full py-2 bg-stone-400 hover:bg-blue-700 hover:text-white rounded-md hover:shadow-lg hover:font-bold transition duration-300"
                 >
                     <img src="/images/slack.svg" alt="Slack Icon" className="w-5 h-5 mr-2" />
