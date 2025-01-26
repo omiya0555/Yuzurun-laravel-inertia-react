@@ -10,19 +10,27 @@ export default function UpdateProfileInformation({
     status,
     className = '',
 }) {
-    const user = usePage().props.auth.user;
+    const $page = usePage(); // $page で共有データにアクセス
+    const auth = $page.props.auth || {};
+    const user = auth.user || {};
 
+    // フォームデータの初期化
     const { data, setData, patch, errors, processing, recentlySuccessful } =
         useForm({
-            name: user.name,
-            email: user.email,
+            name: user.name || '',
+            email: user.email || '',
         });
 
+    // フォームの送信
     const submit = (e) => {
         e.preventDefault();
-
         patch(route('profile.update'));
     };
+
+    // auth.user がまだ存在しない場合の防御的処理
+    if (!auth || !auth.user) {
+        return <div>Loading...</div>;
+    }
 
     return (
         <section className={className}>
@@ -30,7 +38,6 @@ export default function UpdateProfileInformation({
                 <h2 className="text-lg font-medium text-gray-900">
                     プロフィール情報
                 </h2>
-
                 <p className="mt-1 text-sm text-gray-600">
                     アカウント情報の更新ができます。
                 </p>
@@ -39,7 +46,6 @@ export default function UpdateProfileInformation({
             <form onSubmit={submit} className="mt-6 space-y-6">
                 <div>
                     <InputLabel htmlFor="name" value="ユーザー名" />
-
                     <TextInput
                         id="name"
                         className="mt-1 block w-full"
@@ -49,13 +55,11 @@ export default function UpdateProfileInformation({
                         isFocused
                         autoComplete="name"
                     />
-
                     <InputError className="mt-2" message={errors.name} />
                 </div>
 
                 <div>
                     <InputLabel htmlFor="email" value="Eメール" />
-
                     <TextInput
                         id="email"
                         type="email"
@@ -65,7 +69,6 @@ export default function UpdateProfileInformation({
                         required
                         autoComplete="username"
                     />
-
                     <InputError className="mt-2" message={errors.email} />
                 </div>
 
@@ -93,7 +96,6 @@ export default function UpdateProfileInformation({
 
                 <div className="flex items-center gap-4">
                     <PrimaryButton disabled={processing}>保存</PrimaryButton>
-
                     <Transition
                         show={recentlySuccessful}
                         enter="transition ease-in-out"
@@ -101,9 +103,7 @@ export default function UpdateProfileInformation({
                         leave="transition ease-in-out"
                         leaveTo="opacity-0"
                     >
-                        <p className="text-sm text-gray-600">
-                            保存しました。
-                        </p>
+                        <p className="text-sm text-gray-600">保存しました。</p>
                     </Transition>
                 </div>
             </form>
