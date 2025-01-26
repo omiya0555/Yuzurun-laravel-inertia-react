@@ -23,9 +23,10 @@ class SocialAuthController extends Controller
         $user = User::firstOrCreate(
             ['email' => $googleUser->getEmail()],
             [
-                'name' => $googleUser->getName(),
+                'name'              => $googleUser->getName(),
+                'email'             => $googleUser->getEmail(),
                 'email_verified_at' => now(),
-                'password' => bcrypt(uniqid()), // ダミーのパスワード
+                'password'          => bcrypt(uniqid()), // ダミーのパスワード
             ]
         );
 
@@ -47,9 +48,10 @@ class SocialAuthController extends Controller
         $user = User::firstOrCreate(
             ['email' => $slackUser->getEmail()],
             [
-                'name' => $slackUser->getName(),
+                'name'              => $slackUser->getName(),
+                'email'             => $slackUser->getEmail(),
                 'email_verified_at' => now(),
-                'password' => bcrypt(uniqid()),
+                'password'          => bcrypt(uniqid()),
             ]
         );
 
