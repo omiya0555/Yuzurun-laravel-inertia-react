@@ -10,6 +10,11 @@ RUN apt-get update && apt-get install -y \
     curl \
     && docker-php-ext-install pdo_mysql gd
 
+# Node.js v22.12をインストール
+RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
+    apt-get install -y nodejs && \
+    npm install -g npm
+
 # sail ユーザーを追加
 RUN groupadd -g 1000 sail && \
     useradd -u 1000 -g sail -m sail && \
@@ -29,7 +34,7 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 WORKDIR /var/www/html
 
 # Laravelプロジェクトをコピー
-COPY ./composer.json ./composer.lock /var/www/html/
+COPY ./composer.json ./composer.lock ./package.json ./package-lock.json /var/www/html/
 COPY . /var/www/html/
 
 # 必要なディレクトリを作成し、権限を設定
@@ -39,6 +44,10 @@ RUN mkdir -p /var/www/html/storage /var/www/html/bootstrap/cache && \
 
 # Composerで依存関係をインストール
 RUN composer install --no-dev --optimize-autoloader
+
+# Node.js依存関係のインストールとビルド
+RUN npm install && \
+    npm run build
 
 # Laravelのキャッシュ作成
 RUN php artisan config:cache && \

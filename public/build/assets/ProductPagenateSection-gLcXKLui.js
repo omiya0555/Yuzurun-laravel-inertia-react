@@ -1,0 +1,1 @@
+import{j as t,U as s}from"./app-DPh2l7GI.js";function l({products:r}){return t.jsx("div",{className:"mt-8 flex justify-center",children:r.links.map((e,a)=>t.jsx(s,{href:e.url,preserveState:!0,className:`inline-block px-3 py-1 mx-1 rounded-md ${e.active?"bg-blue-600 text-white":"bg-gray-300 text-gray-800"}`,children:e.label},a))})}export{l as default};
