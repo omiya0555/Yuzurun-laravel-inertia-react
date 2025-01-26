@@ -87,15 +87,18 @@ export default function WelcomeInfo() {
             <div className="flex justify-center">
                 <div>
                     <h2 className='md:text-3xl text-2xl font-extrabold text-gray-900 mb-8'>備考</h2>
-                    <div className='text-sm md:text-xl text-gray-700 bg-stone-200 p-8 rounded-md leading-relaxed'>
+                    <div className='text-xs md:text-xl text-gray-700 bg-stone-200 p-8 rounded-md leading-relaxed'>
                         <p className='mb-8'>
                             ・<span className='text-gray-900 font-semibold'>現在は出品機能に制限をかけております。</span>
                         </p>
                         <p className='mb-8'>
-                            ・なぜならこのアプリの真の目的は、<span className='text-gray-900 font-semibold'>「転居にあたって譲れるものを譲ること」</span>だからです。
+                            ・<span className='text-gray-900 font-semibold'>現在は各プロバイダ認証機能に制限をかけております。</span>
                         </p>
                         <p className='mb-8'>
-                            ・受取場所や日時調整は、アプリ内チャット,LINE,Signalを選択できます。
+                            ・目的は<span className='text-gray-900 font-semibold'>「わたしの譲れるものを譲ること」</span>です。
+                        </p>
+                        <p className='mb-8'>
+                            ・受取場所や日時調整の方法には、アプリ内チャット,LINE,Signalを選択できます。
                         </p>
                         <p className=''>
                             ・<span className='text-gray-900 font-semibold'>無料で配送方法も自由相談</span>のフリーマーケットサイトです ：）
