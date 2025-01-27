@@ -44,10 +44,10 @@ function MessageModal({ isOpen, onClose, onSubmit }) {
         {selectedTab === 'chat' && (
           <div className='space-y-1 h-32'>
             <p>アプリ内のチャットでもろもろ決めます。</p>
-            <p className='font-semibold text-purple-600 pb-2'>通知はあなたの登録メールに届くので厄介です！</p>
+            <p className='font-semibold text-purple-600 pb-2'>通知はありません。</p>
             <textarea
               className="w-full border-gray-400 rounded-md px-4 py-1"
-              placeholder='例: 〇日〇時に、〇〇でうけとれます！'
+              placeholder='例:〇〇と申します。 〇日〇時に、〇〇でうけとれます！'
               onChange={(e) => setMessage(e.target.value)}
               rows={2}
             />

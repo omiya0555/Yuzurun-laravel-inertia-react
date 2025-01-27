@@ -20,19 +20,20 @@ export default function CreateProduct({ categories, conditions }) {
   document.body.appendChild(overlay);
 
   const submit = (e) => {
-    e.preventDefault();
-    overlay.classList.add('active');
+    return;
+    // e.preventDefault();
+    // overlay.classList.add('active');
 
-    post(route('products.store'), {
-      onSuccess: () => {
-        reset();
-        overlay.classList.remove('active');
-      },
-      onError: () => {
-        overlay.classList.remove('active');
-      },
-      preserveScroll: true,
-    });
+    // post(route('products.store'), {
+    //   onSuccess: () => {
+    //     reset();
+    //     overlay.classList.remove('active');
+    //   },
+    //   onError: () => {
+    //     overlay.classList.remove('active');
+    //   },
+    //   preserveScroll: true,
+    // });
   };
 
   return (
@@ -154,7 +155,8 @@ export default function CreateProduct({ categories, conditions }) {
           <div className="flex justify-end">
             <button
               type="submit"
-              disabled={processing}
+              //disabled={processing}
+              disabled
               className={`w-full bg-red-600 text-white font-bold mt-4 px-8 py-3 rounded-md hover:bg-red-800 transition ${processing ? 'opacity-50 cursor-not-allowed' : ''
                 }`}
             >
