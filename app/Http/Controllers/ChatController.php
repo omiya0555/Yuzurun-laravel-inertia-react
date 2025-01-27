@@ -1,11 +1,13 @@
 <?php
 
 namespace App\Http\Controllers;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\SendChatLink;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use App\Models\Product;
 
 class ChatController extends Controller
 {
@@ -42,12 +44,31 @@ class ChatController extends Controller
         try {
             $userId     = Auth::id();
             $userName   = Auth::user()->name;
+            
+            // roomId のフォーマットを解析（例: 商品ID_購入者ID）
+            list($productId, $buyerId) = explode('_', $roomId);
+
+            // 商品情報を取得
+            $product = Product::findOrFail($productId);
+            
+            // 出品者か購入者か確認
+            if ($product->seller_id !== $userId && $buyerId !== (string) $userId) {
+                // ユーザーが出品者でも購入者でもない場合は403エラー
+                return response()->json([
+                    'message' => 'ルームを開く権限がありません。'
+                ], 403);
+            }
 
             return Inertia::render('Chat/Room', [
                 'roomId'    => $roomId,
                 'user_id'   => $userId,
                 'user_name' => $userName,
             ]);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'チャットルームが見つかりませんでした。'
+            ], 404);
+
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage()
