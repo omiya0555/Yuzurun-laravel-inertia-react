@@ -4,12 +4,18 @@ import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
-import TermsOfServiceModal from './TermsOfServiceModal'; // 利用規約モーダルのインポート
+import TermsOfServiceModal from './TermsOfServiceModal';    // 利用規約モーダルのインポート
+import PrivacyPolicyModal from './PrivacyPolicyModal';      // プライバシーポリシーモーダルのインポート
 import Checkbox from '@/Components/Checkbox';
 
 export default function Register() {
-    const [isModalOpen, setIsModalOpen] = useState(false); // モーダル状態
-    const [isAgreed, setIsAgreed] = useState(false); // 利用規約同意状態
+    const [isTermsModalOpen, setIsTermsModalOpen] = useState(false);        // 利用規約モーダル状態
+    const [isPrivacyModalOpen, setIsPrivacyModalOpen] = useState(false);    // プライバシーポリシーモーダル状態
+    const [isAgreed, setIsAgreed] = useState({
+        terms: false,
+        privacy: false,
+    }); // 各同意状態
+
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
         email: '',
@@ -19,12 +25,12 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
-        if (isAgreed) {
+        if (isAgreed.terms && isAgreed.privacy) {
             post(route('register'), {
                 onFinish: () => reset('password', 'password_confirmation'),
             });
         } else {
-            alert('利用規約に同意してください。');
+            alert('利用規約およびプライバシーポリシーに同意してください。');
         }
     };
 
@@ -94,14 +100,31 @@ export default function Register() {
                 <div className="mt-4">
                     <label className="flex items-center space-x-2">
                         <Checkbox
-                            checked={isAgreed}
-                            onChange={() => setIsAgreed(!isAgreed)}
+                            checked={isAgreed.terms}
+                            onChange={() => setIsAgreed({ ...isAgreed, terms: !isAgreed.terms })}
                         />
                         <span className="text-sm text-gray-600">利用規約に同意します</span>
                         <button
                             type="button"
                             className="underline text-sm text-gray-600 hover:text-gray-900"
-                            onClick={() => setIsModalOpen(true)}
+                            onClick={() => setIsTermsModalOpen(true)}
+                        >
+                            詳細を確認
+                        </button>
+                    </label>
+                </div>
+
+                <div className="mt-4">
+                    <label className="flex items-center space-x-2">
+                        <Checkbox
+                            checked={isAgreed.privacy}
+                            onChange={() => setIsAgreed({ ...isAgreed, privacy: !isAgreed.privacy })}
+                        />
+                        <span className="text-sm text-gray-600">プライバシーポリシーに同意します</span>
+                        <button
+                            type="button"
+                            className="underline text-sm text-gray-600 hover:text-gray-900"
+                            onClick={() => setIsPrivacyModalOpen(true)}
                         >
                             詳細を確認
                         </button>
@@ -116,7 +139,7 @@ export default function Register() {
                         既に登録済みですか？
                     </Link>
 
-                    <PrimaryButton className="ms-4" disabled={processing || !isAgreed}>
+                    <PrimaryButton className="ms-4" disabled={processing || !isAgreed.terms || !isAgreed.privacy}>
                         新規登録
                     </PrimaryButton>
                 </div>
@@ -127,13 +150,6 @@ export default function Register() {
             <div className="flex space-x-4">
                 <button
                     disabled
-                    // onClick={() => {
-                    //     if (isAgreed) {
-                    //         window.location.href = route('google.login');
-                    //     } else {
-                    //         alert('利用規約に同意してください。');
-                    //     }
-                    // }}
                     className="flex items-center justify-center w-full py-2 bg-stone-400 hover:bg-red-500 hover:text-white hover:shadow-lg hover:font-bold rounded-md transition duration-300"
                 >
                     <img src="/images/google.svg" alt="Google Icon" className="w-5 h-5 mr-2" />
@@ -142,13 +158,6 @@ export default function Register() {
 
                 <button
                     disabled
-                    // onClick={() => {
-                    //     if (isAgreed) {
-                    //         window.location.href = route('slack.login');
-                    //     } else {
-                    //         alert('利用規約に同意してください。');
-                    //     }
-                    // }}
                     className="flex items-center justify-center w-full py-2 bg-stone-400 hover:bg-blue-700 hover:text-white rounded-md hover:shadow-lg hover:font-bold transition duration-300"
                 >
                     <img src="/images/slack.svg" alt="Slack Icon" className="w-5 h-5 mr-2" />
@@ -156,8 +165,11 @@ export default function Register() {
                 </button>
             </div>
 
-            {/* 利用規約モーダル */} 
-            <TermsOfServiceModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
+            {/* 利用規約モーダル */}
+            <TermsOfServiceModal isOpen={isTermsModalOpen} onClose={() => setIsTermsModalOpen(false)} />
+
+            {/* プライバシーポリシーモーダル */}
+            <PrivacyPolicyModal isOpen={isPrivacyModalOpen} onClose={() => setIsPrivacyModalOpen(false)} />
         </GuestLayout>
     );
 }
